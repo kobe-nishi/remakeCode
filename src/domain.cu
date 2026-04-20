@@ -96,6 +96,7 @@ void Domain::time_print(const int div) {
     printf("iter: %d, time: %.3e [s]\n", this->iter, total_time / 1000);
     for (int i = 0; i < num_name; i++) {
       printf("%s: %.3e [s] (%6.2f %%)\n", name[i].c_str(), this->elapsed_time[i] / 1000, this->elapsed_time[i] / total_time * 100);
+      
     }
     printf("=========================================\n");
     for (int i = 0; i < num_name; i++)

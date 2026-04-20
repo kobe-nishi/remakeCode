@@ -4,6 +4,7 @@
 
 #include <iostream>
 
+using Double3 = vec3<double>;
 #include "init.h"
 #include "json.h"
 #include "domain.h"
