@@ -1,0 +1,19 @@
+{
+  "iter": 0,
+  "iter_max": 1000,
+  "time": 0.0,
+  "time_max": 100.0,
+  "dt": 1.0e-4,
+  "mesh_length": [1.0, 1.0, 1.0],
+  "mesh_shape": "cube",
+  "lsp_shape": "cube",
+  "dirichlet_bc": [false, false, false, false, false, false],
+  "newton_max": 100,
+  "newton_tole": 1e-10,
+  "neo_mu": 1.0,
+  "ng": 4,
+  "output_idx": 0,
+  "output_div": 1,
+  "output_interval": 100,
+  "output_restart_interval": 1
+}
