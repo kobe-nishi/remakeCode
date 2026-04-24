@@ -22,7 +22,10 @@ LDFLAGS   = -lcublas -lcusparse -lcudart -lstdc++ -L$(CUDA_PATH)/lib64 -arch $(A
 else
 CFLAGS    = -O3 -I$(INC_DIR) -std=c++20 -fopenmp -MMD -MP
 NVCCFLAGS = -O3 -I$(INC_DIR) -std=c++20 -I$(CUDA_PATH)/samples/Common -I$(CUDA_PATH)/samples/common/inc -I$(CUDA_PATH)/include -arch $(ARCH) -dc -MMD -MP
-LDFLAGS   = -lcublas -lcusparse -lcudart -lstdc++ -L$(CUDA_PATH)/lib64 -arch $(ARCH) -lcudss -lhdf5_cpp -lhdf5
+# LDFLAGS   = -lcublas -lcusparse -lcudart -lstdc++ -L$(CUDA_PATH)/lib64 -arch $(ARCH) -lcudss -lhdf5_cpp -lhdf5
+
+# LDFLAGS   = -L./lib_hack -Wl,-rpath,./lib_hack -lcublas -lcusparse -lcudart -lstdc++ -L$(CUDA_PATH)/lib64 -arch $(ARCH) -lcudss -lhdf5_cpp -lhdf5
+LDFLAGS   = -lcublas -lcusparse -lcudart -lstdc++ -L$(CUDA_PATH)/lib64 -arch $(ARCH) -lhdf5_cpp -lhdf5
 endif
 
 SRCS_CU  := $(wildcard $(SRC_DIR)/*.cu)

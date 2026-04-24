@@ -1,0 +1,5 @@
+/obj/*
+
+/config/run
+
+config/*bin

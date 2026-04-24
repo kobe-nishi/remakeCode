@@ -14,10 +14,16 @@
 
 #include <iostream>
 
+#include "vec3.h"
 using Double3 = vec3<double>;
-#include "init.h"
+#include "managed.h"
 #include "json.h"
-#include "domain.h"
-#include "json.h"
-#include "output.h"
 #include "xdmf3.h"
+#include "domain.h"
+
+#include "spline.h"
+#include "mycudss.h"
+#include "myfunc.h"
+#include "iga.h"
+#include "init.h"
+#include "output.h"

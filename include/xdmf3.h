@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <cstddef>
 #include <filesystem>
-#include <format>
+#define FMT_USE_CONSTEVAL 0
+#include <fmt/core.h>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -312,17 +313,20 @@ struct DataItem {
     } else {
       dataContent = ind + "  " + heavyDataPath + "\n";
     }
+    return ind + "<DataItem Format=\"" + formatStr + "\" DataType=\"" + dataType + "\" " +
+           "Precision=\"" + std::to_string(precision) + "\" Dimensions=\"" + dimStr + "\">\n" +
+           dataContent + ind + "</DataItem>";
 
-    return std::format(
-        "{}<DataItem Format=\"{}\" DataType=\"{}\" "
-        "Precision=\"{}\" Dimensions=\"{}\">\n{}{}</DataItem>",
-        ind,
-        formatStr,
-        dataType,
-        precision,
-        dimStr,
-        dataContent,
-        ind);
+    // return fmt::format(
+    //     "{}<DataItem Format=\"{}\" DataType=\"{}\" "
+    //     "Precision=\"{}\" Dimensions=\"{}\">\n{}{}</DataItem>",
+    //     ind,
+    //     formatStr,
+    //     dataType,
+    //     precision,
+    //     dimStr,
+    //     dataContent,
+    //     ind);
   }
   size_t              size() const { return dimensions.at(0); }
   size_t              dim() const { return dimensions.at(1); }
@@ -336,7 +340,8 @@ struct Geometry {
 
   std::string to_xml(int indent = 0) const {
     std::string ind(indent, ' ');
-    std::string xml = std::format("{}<Geometry GeometryType=\"{}\">\n", ind, to_string(type));
+    //std::string xml = fmt::format("{}<Geometry GeometryType=\"{}\">\n", ind, to_string(type));
+    std::string xml = ind + "<Geometry GeometryType=\"" + to_string(type) + "\">\n";
     if (!dataItems.empty()) {
       for (const auto& item : dataItems) {
         xml += item.to_xml(indent + 2) + "\n";
@@ -344,7 +349,8 @@ struct Geometry {
     } else {
       xml += data.to_xml(indent + 2) + "\n";
     }
-    xml += std::format("{}</Geometry>", ind);
+    // xml += fmt::format("{}</Geometry>", ind);
+    xml += ind + "</Geometry>";
     return xml;
   }
 };
@@ -363,28 +369,39 @@ struct Topology {
       for (size_t i = 0; i < dimensions.size(); ++i) {
         dimStr += std::to_string(dimensions[i]) + (i == dimensions.size() - 1 ? "" : " ");
       }
-      return std::format(
-          "{}<Topology TopologyType=\"{}\" Dimensions=\"{}\"/>", ind, to_string(type), dimStr);
+    //   return fmt::format(
+    //       "{}<Topology TopologyType=\"{}\" Dimensions=\"{}\"/>", ind, to_string(type), dimStr);
+    return ind + "<Topology TopologyType=\"" + to_string(type) + "\" Dimensions=\"" + dimStr + "\"/>";
     } else if (type == TopologyType::Polyline) {
-      return std::format(
-          "{}<Topology TopologyType=\"{}\" "
-          "NumberOfElements=\"{}\" NodesPerElement=\"{}\">\n{}\n{}</Topology>",
-          ind,
-          to_string(type),
-          numberOfElements,
-          dimensions.at(1),
-          data.to_xml(indent + 2),
-          ind);
-    }
-    return std::format(
-        "{}<Topology TopologyType=\"{}\" "
-        "NumberOfElements=\"{}\">\n{}\n{}</Topology>",
-        ind,
-        to_string(type),
-        numberOfElements,
-        data.to_xml(indent + 2),
-        ind);
-  }
+        return ind + "<Topology TopologyType=\"" + to_string(type) + "\" " +
+                    "NumberOfElements=\"" + std::to_string(numberOfElements) + "\" NodesPerElement=\"" + std::to_string(dimensions.at(1)) + "\">\n" +
+                    data.to_xml(indent + 2) + "\n" +
+                    ind + "</Topology>";
+            }
+            return ind + "<Topology TopologyType=\"" + to_string(type) + "\" " +
+                "NumberOfElements=\"" + std::to_string(numberOfElements) + "\">\n" +
+                data.to_xml(indent + 2) + "\n" +
+                ind + "</Topology>";
+        }
+//       return fmt::format(
+//           "{}<Topology TopologyType=\"{}\" "
+//           "NumberOfElements=\"{}\" NodesPerElement=\"{}\">\n{}\n{}</Topology>",
+//           ind,
+//           to_string(type),
+//           numberOfElements,
+//           dimensions.at(1),
+//           data.to_xml(indent + 2),
+//           ind);
+//     }
+//     return fmt::format(
+//         "{}<Topology TopologyType=\"{}\" "
+//         "NumberOfElements=\"{}\">\n{}\n{}</Topology>",
+//         ind,
+//         to_string(type),
+//         numberOfElements,
+//         data.to_xml(indent + 2),
+//         ind);
+//   }
 };
 
 struct Attribute {
@@ -395,15 +412,20 @@ struct Attribute {
 
   std::string to_xml(int indent = 0) const {
     std::string ind(indent, ' ');
-    return std::format(
-        "{}<Attribute Name=\"{}\" AttributeType=\"{}\" "
-        "Center=\"{}\">\n{}\n{}</Attribute>",
-        ind,
-        name,
-        to_string(type),
-        to_string(center),
-        data.to_xml(indent + 2),
-        ind);
+//     return fmt::format(
+//         "{}<Attribute Name=\"{}\" AttributeType=\"{}\" "
+//         "Center=\"{}\">\n{}\n{}</Attribute>",
+//         ind,
+//         name,
+//         to_string(type),
+//         to_string(center),
+//         data.to_xml(indent + 2),
+//         ind);
+//   }
+return ind + "<Attribute Name=\"" + name + "\" AttributeType=\"" + to_string(type) + "\" " +
+           "Center=\"" + to_string(center) + "\">\n" +
+           data.to_xml(indent + 2) + "\n" +
+           ind + "</Attribute>";
   }
 };
 
@@ -421,16 +443,23 @@ struct Grid {
 
   std::string to_xml(int indent = 0) const {
     std::string ind(indent, ' ');
-    std::string xml = std::format("{}<Grid Name=\"{}\" GridType=\"Uniform\">\n", ind, name);
-    if (time.has_value()) {
-      xml += std::format("{}  <Time Value=\"{:.5e}\" />\n", ind, *time);
-    }
+    // std::string xml = fmt::format("{}<Grid Name=\"{}\" GridType=\"Uniform\">\n", ind, name);
+    // if (time.has_value()) {
+    //   xml += fmt::format("{}  <Time Value=\"{:.5e}\" />\n", ind, *time);
+    // }
+    std::string xml = ind + "<Grid Name=\"" + name + "\" GridType=\"Uniform\">\n";
+        if (time.has_value()) {
+        char buf[64];
+        snprintf(buf, sizeof(buf), "%.5e", *time);
+        xml += ind + "  <Time Value=\"" + std::string(buf) + "\" />\n";
+        }
     xml += geometry.to_xml(indent + 2) + "\n";
     xml += topology.to_xml(indent + 2) + "\n";
     for (const auto& attr : attributes) {
       xml += attr.to_xml(indent + 2) + "\n";
     }
-    xml += std::format("{}</Grid>", ind);
+    // xml += fmt::format("{}</Grid>", ind);
+    xml += ind + "</Grid>";
     return xml;
   }
   double get_time() const { return time.value(); }
@@ -514,7 +543,8 @@ class Writer {
 
         long long firstConflictPos = -1;
         for (const auto& grid : m_grids) {
-          std::string searchStr = std::format("<Grid Name=\"{}\"", grid.name);
+        //   std::string searchStr = fmt::format("<Grid Name=\"{}\"", grid.name);
+        std::string searchStr = "<Grid Name=\"" + grid.name + "\"";
           size_t      pos       = buffer.find(searchStr);
           if (pos != std::string::npos) {
             // Walk back to the start of the line to include leading whitespace
@@ -610,7 +640,8 @@ class Writer {
       std::string h5path = m_baseName + ".h5";
       if (step != -2 && totalElements > 0)
         write_hdf5_internal(h5path, groupName, attrName, data, dims);
-      return std::format("{}:/{}/{}", h5path, groupName, attrName);
+    //   return fmt::format("{}:/{}/{}", h5path, groupName, attrName);
+    return h5path + ":/" + groupName + "/" + attrName;
     } else if (m_format == Format::Binary) {
       std::string dirName = m_baseName + "_bin";
       fs::path    subDir  = m_baseDir / dirName / groupName;
@@ -634,9 +665,9 @@ class Writer {
           oss << data[i];
         } else {
           if constexpr (sizeof(T) == 4) {
-            oss << std::format("{:+.7e}", data[i]);
+            oss << fmt::format("{:+.7e}", data[i]);
           } else {
-            oss << std::format("{:+.15e}", data[i]);
+            oss << fmt::format("{:+.15e}", data[i]);
           }
         }
         if (i + 1 < totalElements) {

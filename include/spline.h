@@ -13,11 +13,43 @@
 
 class Cp : public Double3 {
     public:
+        double weight;
+        Double3 pos;
         double w;
         Cp() : Double3(), w(1.0) {};
         Cp(double x_, double y_, double z_, double w_ = 1.0)
             : Double3(x_, y_, z_), w(w_) {};
         ~Cp() {};
+
+        double& operator[](int i) {
+            switch (i) {
+            // clang-format off
+            case 0: return weight;
+            case 1: return pos.x; case 2: return pos.y; case 3: return pos.z;
+            // clang-format on
+            default:
+            std::cerr << "Index " << i << " is out of range in Cp." << std::endl;
+            exit(EXIT_FAILURE);
+            }
+        }
+        const double& operator[](int i) const {
+            switch (i) {
+            // clang-format off
+            case 0: return weight;
+            case 1: return pos.x; case 2: return pos.y; case 3: return pos.z;
+            // clang-format on
+            default:
+            std::cerr << "Index " << i << " is out of range in Cp." << std::endl;
+            exit(EXIT_FAILURE);
+            }
+        }
+        friend std::ostream& operator<<(std::ostream& os, const Cp& cp) {
+            //clang-format off
+            os << "weight: "
+            << cp.weight << ", pos: " << cp.pos;
+            //clang-format on
+            return os;
+        }
 };
 class Spline{
     public:

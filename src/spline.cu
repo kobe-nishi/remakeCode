@@ -28,10 +28,10 @@ void Spline::cp_read(const fs::path& dirpath, const std::string& filename) {
     ifs.read(reinterpret_cast<char*>(&size), sizeof(int));
     cp.resize(size);
     for (int i = 0; i < size; i++) {
-        ifs.read(reinterpret_cast<const char*>(&cp[i].x), sizeof(double));
-        ifs.read(reinterpret_cast<const char*>(&cp[i].y), sizeof(double));
-        ifs.read(reinterpret_cast<const char*>(&cp[i].z), sizeof(double));
-        ifs.read(reinterpret_cast<const char*>(&cp[i].w), sizeof(double));
+        ifs.read(reinterpret_cast<char*>(&cp[i].x), sizeof(double));
+        ifs.read(reinterpret_cast<char*>(&cp[i].y), sizeof(double));
+        ifs.read(reinterpret_cast<char*>(&cp[i].z), sizeof(double));
+        ifs.read(reinterpret_cast<char*>(&cp[i].w), sizeof(double));
     }
     ifs.close();
 }

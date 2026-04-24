@@ -2,6 +2,7 @@
 #include <iostream>
 #include <regex>
 #include <vector>
+#define OUTPUT_BINARY
 
 #include "mydef.h"
 
@@ -108,7 +109,7 @@ void knot_insertion(vector<double>& knotvector, vector<double>& insert_knot, vec
 }
 
 vector<vector<double>> get_matrix_for_degree_elevation_and_knot_insertion(const int ncp, const int p, int ncp_, int p_){
-    vector<vector<double>> C = get_indentity_matrix_2d<double>(ncp_);
+    vector<vector<double>> C = get_identity_tensor_2d<double>(ncp_);
     while(p_ < p){
         // Degree elevation
         vector<vector<double>> Cm(ncp_, vector<double>(ncp_ + 1, 0));
@@ -153,7 +154,7 @@ vector<vector<double>> get_matrix_for_degree_elevation_and_knot_insertion(const 
 void set_line_cpw(vector<Cpw>& cpw, const int& p, const int& ncp) {
     int p_   = 1;
     int ncp_ = 2;
-    Vector<Cpw> cpw_(2);
+    vector<Cpw> cpw_(2);
     cpw_[0].x = 0.0;
     cpw_[0].w = 1.0;
     cpw_[1].x = 1.0;
@@ -275,7 +276,7 @@ void set_init_cp(vector<Cpw>& cpw, Spline& spl, Domain& dom){
         double w         = cpw[i].w;
         spl.cp[i].weight = w;
         spl.cp[i].pos    = cpw[i] * w;
-        spl.cp[i].diffu  = 0.0;
+        // spl.cp[i].diffu  = 0.0;
     }
 }
 
@@ -339,7 +340,6 @@ void make_mydef_header(Spline& spl) {
 int main(){
     Domain dom(true);
     Spline spl;
-    Mesh mesh;
 
     vector<Cpw> cpw;
 
@@ -367,7 +367,7 @@ int main(){
 
     make_config_data(dom, spl);
 
-    make_mydef_header();
+    make_mydef_header(spl);
 
     return 0;
 }

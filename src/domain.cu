@@ -1,7 +1,9 @@
 #include <fstream>
 #include <iostream>
 
-#include "mydef.h"
+#include "domain.h"
+#include "init.h"
+#include "json.h"
 
 using namespace std;
 using json        = nlohmann::json;

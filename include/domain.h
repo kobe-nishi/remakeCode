@@ -1,8 +1,14 @@
 #pragma once
-
+#define OUTPUT_BINARY
 #include <array>
 #include <filesystem>
 #include <vector>
+#include <string>
+
+#include "managed.h"
+#include "vec3.h"
+#include "xdmf3.h"
+using Double3 = vec3<double>;
 
 class Domain : public Managed {
     public:
@@ -29,6 +35,8 @@ class Domain : public Managed {
     bool reset_lsp_matrix       = true;
     bool reset_current_data     = true;
 
+    double neo_mu = 1.0;
+
     /*=== newton-raphson condition ===*/
     int newton_max     = 1e2;
     double newton_tole = 1.0e-10;
@@ -52,4 +60,4 @@ class Domain : public Managed {
     void time_print(const int div = 1);
     void read_config();
     void write_config(const std::filesystem::path& dirpath);
-}
+};
