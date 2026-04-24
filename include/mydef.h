@@ -22,4 +22,6 @@ using Double3 = vec3<double>;
 #include "spline.h"
 #include "iga.h"
 #include "output.h"
+#include "mydef.h"
+#include "myfunc.h"
 #include "xdmf3.h"

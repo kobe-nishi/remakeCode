@@ -65,7 +65,7 @@ $(CONFIG_PROG) : $(CONFIG_OBJSDIR)
 config: $(CONFIG_PROG)
 	rm -rf ./config/image/*.dat
 	./$(CONFIG_PROG)
-	python ./python/plot_map.py ./config/image
+# 	python ./python/plot_map.py ./config/image
 	@echo "**\(^_^)/** Config data has been created **\(^_^)/**"
 
 clean:
