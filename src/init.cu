@@ -78,6 +78,6 @@ void Init::GPU_init() {
 }
 
 Init::Init(int argc, char** argv) {
-  srice_device(argc, argv);
-  GPU_init();
+    srice_device(argc, argv);
+    GPU_init();
 }
